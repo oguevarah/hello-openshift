@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label "maven"
+    }
     options { 
         skipDefaultCheckout()
         disableConcurrentBuilds()
@@ -7,15 +9,12 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
-                script {
-                    openshift.withCluster {
-                        openshift.withProject {
-                            def bc = openshift.selector("bc", "hello-openshift").object()
-
-                            git branch: "master", url: bc.spec.source.git.uri
-                        }
-                    }
-                }
+                checkout(scm)
+            }
+        }
+        stage("Test") {
+            steps {
+                sh "mvn test"
             }
         }
         stage("Build") {
