@@ -2,6 +2,10 @@
 
 A simple Hello World application to demonstrate OpenShift concepts.
 
+## Pipeline Overview
+
+![Pipeline](pipeline.png)
+
 ## Deploy in OpenShift
 
 Run the following commands (or run the [demo.sh](demo.sh) script):
@@ -29,6 +33,3 @@ Start the pipeline
 
     oc start-build bc/hello-openshift-pipeline -n hello-dev
 
-## Pipeline Overview
-
-![Pipeline](pipeline.png)
