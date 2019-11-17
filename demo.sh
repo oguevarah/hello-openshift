@@ -15,4 +15,6 @@ oc new-app --template=jenkins-ephemeral -n hello-dev
 oc adm policy add-role-to-user edit system:serviceaccount:hello-dev:jenkins -n hello-test
 oc adm policy add-role-to-user edit system:serviceaccount:hello-dev:jenkins -n hello-prod
 
-oc new-build https://github.com/leandroberetta/hello-openshift.git --name hello-openshift-pipeline --strategy=pipeline -n hello-dev
+# Start the pipeline
+
+oc start-build bc/hello-openshift-pipeline -n hello-dev
