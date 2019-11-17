@@ -1,0 +1,95 @@
+apiVersion: template.openshift.io/v1
+kind: Template
+metadata:
+  name: hello-openshift
+objects:
+- kind: DeploymentConfig
+  apiVersion: apps.openshift.io/v1
+  metadata:
+    name: ${APPLICATION_NAME}
+    annotations:
+      app.openshift.io/vcs-ref: master
+      app.openshift.io/vcs-uri: https://github.com/leandroberetta/hello-openshift.git
+    labels:
+      app: ${APPLICATION_NAME}
+      app.kubernetes.io/component: ${APPLICATION_NAME}
+      app.kubernetes.io/instance: ${APPLICATION_NAME}
+      app.kubernetes.io/name: ${APPLICATION_NAME}
+      app.kubernetes.io/part-of: ${APPLICATION_NAME}
+      app.openshift.io/runtime: java
+  spec:
+    strategy:
+      type: Rolling
+    triggers:
+      - type: ConfigChange
+      - type: ImageChange
+        imageChangeParams:
+          automatic: true
+          containerNames:
+            - ${APPLICATION_NAME}
+          from:
+            kind: ImageStreamTag
+            name: ${APPLICATION_NAME}:${APPLICATION_VERSION}
+    replicas: 1
+    selector:
+      app: ${APPLICATION_NAME}
+    template:
+      metadata:
+        labels:
+          app: ${APPLICATION_NAME}
+      spec:
+        volumes:
+          - name: ${APPLICATION_NAME}
+            configMap:
+              name: ${APPLICATION_NAME}
+        containers:
+          - name: ${APPLICATION_NAME}
+            image: ${APPLICATION_NAME}:latest
+            ports:
+            - containerPort: 8080
+              protocol: TCP
+            volumeMounts:
+              - name: ${APPLICATION_NAME}
+                mountPath: /etc/config
+- apiVersion: v1
+  kind: Service
+  metadata:
+    labels:
+      run: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      app: ${APPLICATION_NAME}
+- apiVersion: route.openshift.io/v1
+  kind: Route
+  metadata:
+    labels:
+      app: ${APPLICATION_NAME}
+    name: ${APPLICATION_NAME}
+  spec:
+    port:
+      targetPort: 8080
+    to:
+      kind: Service
+      name: ${APPLICATION_NAME}
+- apiVersion: v1
+  data:
+    application.properties: |
+      hello.message=Hola
+  kind: ConfigMap
+  metadata:
+    name: ${APPLICATION_NAME}
+parameters:
+- name: APPLICATION_NAME
+  description: Application Name
+  value: hello-openshift
+- name: APPLICATION_VERSION
+  description: Application Version
+  value: latest
+- name: HELLO_MESSAGE
+  description: Hello Message
+  value: Hello
