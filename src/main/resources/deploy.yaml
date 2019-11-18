@@ -28,7 +28,7 @@ objects:
             - ${APPLICATION_NAME}
           from:
             kind: ImageStreamTag
-            name: ${IMAGE_NAME}:${IMAGE_TAG}
+            name: ${IMAGE_NAME}:${IMAGE_TAG_NAME}
     replicas: 1
     selector:
       app: ${APPLICATION_NAME}
@@ -40,6 +40,18 @@ objects:
         containers:
           - name: ${APPLICATION_NAME}
             image: ${IMAGE_NAME}:latest
+            readinessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
+            livenessProbe:
+              failureThreshold: 3
+              httpGet:
+                path: /health
+                port: 8080
+                scheme: HTTP
             ports:
             - containerPort: 8080
               protocol: TCP
@@ -75,6 +87,6 @@ parameters:
 - name: IMAGE_NAME
   description: Image Name
   value: hello-openshift
-- name: IMAGE_TAG
+- name: IMAGE_TAG_NAME
   description: Image Tag
   value: latest
