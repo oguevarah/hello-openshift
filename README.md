@@ -1,6 +1,6 @@
 # Hello, OpenShift!
 
-A simple Hello World application to demonstrate OpenShift concepts.
+Simple application to demonstrate OpenShift concepts.
 
 ## Application Overview
 

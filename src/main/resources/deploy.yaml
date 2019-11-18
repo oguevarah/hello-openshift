@@ -41,17 +41,20 @@ objects:
           - name: ${APPLICATION_NAME}
             image: ${IMAGE_NAME}:latest
             readinessProbe:
-              failureThreshold: 3
               httpGet:
                 path: /health
                 port: 8080
-                scheme: HTTP
             livenessProbe:
-              failureThreshold: 3
               httpGet:
                 path: /health
                 port: 8080
-                scheme: HTTP
+            resources:
+              limits:
+                cpu: 1
+                memory: 512Mi
+              requests:
+                cpu: 1
+                memory: 512Mi
             ports:
             - containerPort: 8080
               protocol: TCP
