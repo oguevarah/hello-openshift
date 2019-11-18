@@ -9,8 +9,7 @@ pipeline {
     stages {
         stage("Checkout") {
             steps {
-                checkout(scm)
-                env.TAG = readMavenPom().getVersion()
+                checkout(scm)   
             }
         }
         stage("Test") {
@@ -23,6 +22,7 @@ pipeline {
                 script {
                     openshift.withCluster {
                         openshift.withProject {
+                            env.TAG = readMavenPom().getVersion()
                             openshift.selector("bc", "hello-openshift").startBuild("--wait=true")
                             openshift.tag("hello-dev/hello-openshift:latest", "hello-openshift:${env.TAG}")
                         }
