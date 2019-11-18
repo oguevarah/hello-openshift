@@ -28,7 +28,7 @@ objects:
             - ${APPLICATION_NAME}
           from:
             kind: ImageStreamTag
-            name: ${APPLICATION_NAME}:${APPLICATION_VERSION}
+            name: ${IMAGE_NAME}:${IMAGE_TAG}
     replicas: 1
     selector:
       app: ${APPLICATION_NAME}
@@ -37,19 +37,12 @@ objects:
         labels:
           app: ${APPLICATION_NAME}
       spec:
-        volumes:
-          - name: ${APPLICATION_NAME}
-            configMap:
-              name: ${APPLICATION_NAME}
         containers:
           - name: ${APPLICATION_NAME}
-            image: ${APPLICATION_NAME}:latest
+            image: ${IMAGE_NAME}:latest
             ports:
             - containerPort: 8080
               protocol: TCP
-            volumeMounts:
-              - name: ${APPLICATION_NAME}
-                mountPath: /etc/config
 - apiVersion: v1
   kind: Service
   metadata:
@@ -75,20 +68,13 @@ objects:
     to:
       kind: Service
       name: ${APPLICATION_NAME}
-- apiVersion: v1
-  data:
-    application.properties: |
-      hello.message=Hola
-  kind: ConfigMap
-  metadata:
-    name: ${APPLICATION_NAME}
 parameters:
 - name: APPLICATION_NAME
   description: Application Name
   value: hello-openshift
-- name: APPLICATION_VERSION
-  description: Application Version
+- name: IMAGE_NAME
+  description: Image Name
+  value: hello-openshift
+- name: IMAGE_TAG
+  description: Image Tag
   value: latest
-- name: HELLO_MESSAGE
-  description: Hello Message
-  value: Hello

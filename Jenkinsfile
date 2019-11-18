@@ -38,7 +38,8 @@ pipeline {
                             if (!openshift.selector("dc", "hello-openshift").exists()) {
                                 openshift.apply(openshift.process(readFile("src/main/resources/deploy.yaml"), 
                                                                   "-p APPLICATION_NAME=hello-openshift", 
-                                                                  "-p APPLICATION_VERSION=${env.TAG}"))
+                                                                  "-p IMAGE_NAME=hello-openshift", 
+                                                                  "-p IMAGE_TAG=${env.TAG}"))
                             } else {
                                 openshift.set("triggers", "dc/hello-openshift", "--remove-all")
                                 openshift.set("triggers", "dc/hello-openshift", "--from-image=hello-openshift:${env.TAG}", "-c hello-openshift")
@@ -69,7 +70,8 @@ pipeline {
                             if (!openshift.selector("dc", "hello-openshift").exists()) {
                                 openshift.apply(openshift.process(readFile("src/main/resources/deploy.yaml"), 
                                                                   "-p APPLICATION_NAME=hello-openshift", 
-                                                                  "-p APPLICATION_VERSION=${env.TAG}"))
+                                                                  "-p IMAGE_NAME=hello-openshift", 
+                                                                  "-p IMAGE_TAG=${env.TAG}"))
                             } else {
                                 openshift.set("triggers", "dc/hello-openshift", "--remove-all")
                                 openshift.set("triggers", "dc/hello-openshift", "--from-image=hello-openshift:${env.TAG}", "-c hello-openshift")
@@ -101,7 +103,8 @@ pipeline {
                             if (!openshift.selector("dc", "hello-openshift").exists()) {
                                 openshift.apply(openshift.process(readFile("src/main/resources/deploy.yaml"), 
                                                                   "-p APPLICATION_NAME=hello-openshift", 
-                                                                  "-p APPLICATION_VERSION=${env.TAG}"))
+                                                                  "-p IMAGE_NAME=hello-openshift", 
+                                                                  "-p IMAGE_TAG=${env.TAG}"))
                             } else {
                                 openshift.set("triggers", "dc/hello-openshift", "--remove-all")
                                 openshift.set("triggers", "dc/hello-openshift", "--from-image=hello-openshift:${env.TAG}", "-c hello-openshift")
