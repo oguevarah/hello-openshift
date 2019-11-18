@@ -2,9 +2,13 @@
 
 A simple Hello World application to demonstrate OpenShift concepts.
 
+## Application Overview
+
+![Pipeline](src/main/resources/images/application.png)
+
 ## Pipeline Overview
 
-![Pipeline](pipeline.png)
+![Pipeline](src/main/resources/images/pipeline.png)
 
 ## Deploy in OpenShift
 
