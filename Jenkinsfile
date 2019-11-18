@@ -10,6 +10,7 @@ pipeline {
         stage("Checkout") {
             steps {
                 checkout(scm)
+                env.TAG = readMavenPom().getVersion()
             }
         }
         stage("Test") {
@@ -23,6 +24,7 @@ pipeline {
                     openshift.withCluster {
                         openshift.withProject {
                             openshift.selector("bc", "hello-openshift").startBuild("--wait=true")
+                            openshift.tag("hello-dev/hello-openshift:latest", "hello-openshift:${env.TAG}")
                         }
                     }
                 }
@@ -35,7 +37,7 @@ pipeline {
                         openshift.withProject {
                             openshift.apply(openshift.process(readFile("src/main/resources/deploy.yaml"), 
                                                               "-p APPLICATION_NAME=hello-openshift", 
-                                                              "-p APPLICATION_VERSION=latest"))
+                                                              "-p APPLICATION_VERSION=${env.TAG}"))
 
                             openshift.selector("dc", "hello-openshift").rollout().status()
                         }
@@ -48,8 +50,7 @@ pipeline {
                 script {
                     openshift.withCluster {
                         openshift.withProject("hello-test") {
-                            env.TAG = readMavenPom().getVersion()
-                            openshift.tag("hello-dev/hello-openshift:latest", "hello-openshift:${env.TAG}")
+                            openshift.tag("hello-dev/hello-openshift:${env.TAG}", "hello-openshift:${env.TAG}")
                         }
                     }
                 }

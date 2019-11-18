@@ -21,7 +21,6 @@ objects:
     strategy:
       type: Rolling
     triggers:
-      - type: ConfigChange
       - type: ImageChange
         imageChangeParams:
           automatic: true
