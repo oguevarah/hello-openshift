@@ -24,15 +24,17 @@ public class HelloControllerTest {
 
     @Test
     public void getHello() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/hello")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Hello")));
+                .andExpect(content().string(equalTo("Hello, World!")));
     }
 
     @Test
     public void getHelloWithName() throws Exception {
-        mvc.perform(MockMvcRequestBuilders.get("/Bob").accept(MediaType.APPLICATION_JSON))
+        mvc.perform(MockMvcRequestBuilders.get("/hello/Mike")
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(content().string(equalTo("Hello Bob")));
+                .andExpect(content().string(equalTo("Hello, Mike!")));
     }
 }

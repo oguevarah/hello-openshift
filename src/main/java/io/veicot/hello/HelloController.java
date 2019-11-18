@@ -11,14 +11,13 @@ public class HelloController {
     @Value( "${hello.message}" )
     private String helloMessage;
 
-    @RequestMapping("/")
+    @RequestMapping("/hello")
     public String hello() {
-        return helloMessage;
+        return String.format(helloMessage, "World");
     }
 
-    @RequestMapping("/{name}")
+    @RequestMapping("/hello/{name}")
     public String helloWithName(@PathVariable() String name) {
-        return String.format("%s %s", helloMessage, name);
+        return String.format(helloMessage, name);
     }
-
 }
