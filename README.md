@@ -1,4 +1,4 @@
-# Hello OpenShift
+# Hello, OpenShift!
 
 A simple Hello World application to demonstrate OpenShift concepts.
 
