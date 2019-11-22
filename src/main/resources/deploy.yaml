@@ -40,21 +40,21 @@ objects:
         containers:
           - name: ${APPLICATION_NAME}
             image: ${IMAGE_NAME}:latest
-            readinessProbe:
-              httpGet:
-                path: /health
-                port: 8080
-            livenessProbe:
-              httpGet:
-                path: /health
-                port: 8080
-            resources:
-              limits:
-                cpu: 1
-                memory: 512Mi
-              requests:
-                cpu: 1
-                memory: 512Mi
+            # readinessProbe:
+            #   httpGet:
+            #     path: /health
+            #     port: 8080
+            # livenessProbe:
+            #   httpGet:
+            #     path: /health
+            #     port: 8080
+            # resources:
+            #   limits:
+            #     cpu: 1
+            #     memory: 512Mi
+            #   requests:
+            #     cpu: 1
+            #     memory: 512Mi
             ports:
             - containerPort: 8080
               protocol: TCP
